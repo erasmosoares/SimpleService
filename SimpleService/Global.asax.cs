@@ -15,6 +15,6 @@ namespace SimpleService
         {
             Mapper.Initialize(c => c.AddProfile<MappingProfile>());
             GlobalConfiguration.Configure(WebApiConfig.Register);
-        }
+        }  
     }
 }

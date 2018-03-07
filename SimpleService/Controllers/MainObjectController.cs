@@ -12,6 +12,9 @@ namespace SimpleService.Controllers
 {
     public class MainObjectController : ApiController
     {
+        private MainObjectDto _diffLeft = new MainObjectDto();
+        private MainObjectDto _diffRight = new MainObjectDto();
+
         private ApplicationDbContext _context;
 
         public MainObjectController()
@@ -19,6 +22,7 @@ namespace SimpleService.Controllers
             _context = new ApplicationDbContext();
         }
 
+        [Route("v1/diff/data")]
         public IEnumerable<MainObjectDto> GetObjects()
         {
             return _context.MainObjects
@@ -26,17 +30,64 @@ namespace SimpleService.Controllers
                 .Select(Mapper.Map<MainObject, MainObjectDto>);
         }
 
+        [Route("v1/diff/data/{id}")]
         public IHttpActionResult GetObjects(int id)
         {
-            var customer = _context.MainObjects.SingleOrDefault(c => c.Id == id);
+            var obj = _context.MainObjects.SingleOrDefault(c => c.Id == id);
 
-            if (customer == null)
+            if (obj == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<MainObject, MainObjectDto>(customer));
+            return Ok(Mapper.Map<MainObject, MainObjectDto>(obj));
         }
 
         [HttpPost]
+        [Route("v1/diff/{id}/left")]
+        public IHttpActionResult AddLeft(int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var objCheck = _context.MainObjects.SingleOrDefault(c => c.Id == id);
+
+            if (objCheck == null)
+                return NotFound();
+
+            var obj = Mapper.Map<MainObject, MainObjectDto>(objCheck);
+
+            _diffLeft = obj;
+
+            return Ok(String.Format(" -> File {0} added to the left side ",_diffLeft.Id));
+        }
+
+        [HttpPost]
+        [Route("v1/diff/{id}/right")]
+        public IHttpActionResult AddRight(int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var objCheck = _context.MainObjects.SingleOrDefault(c => c.Id == id);
+
+            if (objCheck == null)
+                return NotFound();
+
+            var obj = Mapper.Map<MainObject, MainObjectDto>(objCheck);
+
+            _diffRight = obj;
+
+            return Ok(String.Format(" -> File {0} added to the right side ", _diffRight.Id));
+        }
+
+        [HttpPost]
+        [Route("v1/diff/{id}")]
+        public IHttpActionResult DiffData(int id)
+        {
+           return Created(new Uri(Request.RequestUri + "/" + id), new Result { Diff= false } );
+        }
+
+        [HttpPost]
+        [Route("v1/diff/data/post")]
         public IHttpActionResult CreateObject(MainObjectDto objectDto)
         {
             if (!ModelState.IsValid)
@@ -52,7 +103,8 @@ namespace SimpleService.Controllers
 
         }
 
-        [HttpPut]   
+        [HttpPut]
+        [Route("v1/diff/data/put")]
         public void UpdateObject(int id, MainObjectDto objectDto)
         {
             if (!ModelState.IsValid)
@@ -69,15 +121,21 @@ namespace SimpleService.Controllers
         }
 
         [HttpDelete]
-        public void DeleteMovie(int id)
+        [Route("v1/diff/data/delete")]
+        public void DeleteObject(int id)
         {
-            var movieInDb = _context.MainObjects.SingleOrDefault(c => c.Id == id);
+            var objectInDb = _context.MainObjects.SingleOrDefault(c => c.Id == id);
 
-            if (movieInDb == null)
+            if (objectInDb == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            _context.MainObjects.Remove(movieInDb);
+            _context.MainObjects.Remove(objectInDb);
             _context.SaveChanges();
         }
+    }
+
+    public class Result
+    {
+        public bool Diff { get; set; }
     }
 }

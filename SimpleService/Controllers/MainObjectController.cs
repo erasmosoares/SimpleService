@@ -52,7 +52,7 @@ namespace SimpleService.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut]   
         public void UpdateObject(int id, MainObjectDto objectDto)
         {
             if (!ModelState.IsValid)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json.Linq;
 using SimpleService.Dto;
 using SimpleService.Models;
 using System;
@@ -12,9 +13,6 @@ namespace SimpleService.Controllers
 {
     public class MainObjectController : ApiController
     {
-        private MainObjectDto _diffLeft = new MainObjectDto();
-        private MainObjectDto _diffRight = new MainObjectDto();
-
         private ApplicationDbContext _context;
 
         public MainObjectController()
@@ -55,9 +53,9 @@ namespace SimpleService.Controllers
 
             var obj = Mapper.Map<MainObject, MainObjectDto>(objCheck);
 
-            _diffLeft = obj;
+            Diff.Instance.LeftJSON = obj.ToString();
 
-            return Ok(String.Format(" -> File {0} added to the left side ",_diffLeft.Id));
+            return Ok(String.Format(" File {0} added to the left side ", obj.Id));
         }
 
         [HttpPost]
@@ -74,15 +72,22 @@ namespace SimpleService.Controllers
 
             var obj = Mapper.Map<MainObject, MainObjectDto>(objCheck);
 
-            _diffRight = obj;
+            Diff.Instance.RightJSON = obj.ToString();
 
-            return Ok(String.Format(" -> File {0} added to the right side ", _diffRight.Id));
+            return Ok(String.Format(" File {0} added to the right side ", obj.Id));
         }
 
         [HttpPost]
         [Route("v1/diff/{id}")]
         public IHttpActionResult DiffData(int id)
         {
+           IEnumerable<JProperty> diffProperties = Diff.Instance.Compare();
+
+            foreach (var item in diffProperties)
+            {
+                Console.WriteLine(" -> "+item.Value);
+            }
+
            return Created(new Uri(Request.RequestUri + "/" + id), new Result { Diff= false } );
         }
 

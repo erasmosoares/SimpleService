@@ -6,6 +6,9 @@ using System.Web;
 
 namespace SimpleService.Models
 {
+    /// <summary>
+    /// Simple Class for test purpose
+    /// </summary>
     public class MainObject
     {
         public byte Id { get; set; }

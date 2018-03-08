@@ -6,6 +6,9 @@ using System.Web;
 
 namespace SimpleService.Dto
 {
+    /// <summary>
+    /// Domain Transfer Objects
+    /// </summary>
     public class MainObjectDto
     {
         public byte Id { get; set; }

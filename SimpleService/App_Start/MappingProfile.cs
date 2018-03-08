@@ -12,6 +12,7 @@ namespace SimpleService.App_Start
     {
         public MappingProfile()
         {
+            /// Using Mapper 
             Mapper.CreateMap<MainObject, MainObjectDto>();
             Mapper.CreateMap<MainObjectDto, MainObject>();
         }

@@ -5,6 +5,9 @@ using System.Web;
 
 namespace SimpleService.Models
 {
+    /// <summary>
+    /// Log register
+    /// </summary>
     public class Register
     {
         public byte Id { get; set; }

@@ -7,11 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SimpleService.Controllers
 {
+    /// <summary>
+    /// Diff services 
+    /// Custom endpoints
+    /// </summary>
     public class MainObjectController : ApiController
     {
         private ApplicationDbContext _context;
@@ -21,6 +24,10 @@ namespace SimpleService.Controllers
             _context = new ApplicationDbContext();
         }
 
+        /// <summary>
+        /// Retrieve all Data
+        /// </summary>
+        /// <returns>List of objects stored for diff usage</returns>
         [Route("v1/diff/data")]
         public IEnumerable<MainObjectDto> GetObjects()
         {
@@ -29,6 +36,11 @@ namespace SimpleService.Controllers
                 .Select(Mapper.Map<MainObject, MainObjectDto>);
         }
 
+        /// <summary>
+        /// Retrieve a single data
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Action result</returns>
         [Route("v1/diff/data/{id}")]
         public IHttpActionResult GetObjects(int id)
         {
@@ -40,6 +52,11 @@ namespace SimpleService.Controllers
             return Ok(Mapper.Map<MainObject, MainObjectDto>(obj));
         }
 
+        /// <summary>
+        /// Add a stored object to the left side of diff
+        /// </summary>
+        /// <param name="id">Object id</param>
+        /// <returns>Action result</returns>
         [HttpPost]
         [Route("v1/diff/{id}/left")]
         public IHttpActionResult AddLeft(int id)
@@ -54,11 +71,17 @@ namespace SimpleService.Controllers
 
             var obj = Mapper.Map<MainObject, MainObjectDto>(objCheck);
 
-            Diff.Instance.LeftJSON = JsonConvert.SerializeObject(obj);
+            // single data at time
+            Diff.Instance.LeftJSON = JsonConvert.SerializeObject(obj); 
 
             return Ok(String.Format(" File {0} added to the left side ", obj.Id));
         }
 
+        /// <summary>
+        /// Add a stored object to the right side of Diff
+        /// </summary>
+        /// <param name="id">Object id</param>
+        /// <returns>Action result</returns>
         [HttpPost]
         [Route("v1/diff/{id}/right")]
         public IHttpActionResult AddRight(int id)
@@ -73,25 +96,50 @@ namespace SimpleService.Controllers
 
             var obj = Mapper.Map<MainObject, MainObjectDto>(objCheck);
 
+            // single data at time
             Diff.Instance.RightJSON = JsonConvert.SerializeObject(obj);
 
             return Ok(String.Format(" File {0} added to the right side ", obj.Id));
         }
 
+        /// <summary>
+        /// Perform a diff comparisson and create a result uri
+        /// </summary>
+        /// <param name="id">Get diffs comparing to the other side of this id</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("v1/diff/{id}")]
         public IHttpActionResult DiffData(int id)
         {
-           IEnumerable<JProperty> diffProperties = Diff.Instance.Compare();
+            Diff _data = Diff.Instance;
+
+            IEnumerable<JProperty> diffProperties = Diff.Instance.Compare();
 
             foreach (var item in diffProperties)
             {
                 Console.WriteLine(" -> "+item.Value);
             }
 
-           return Created(new Uri(Request.RequestUri + "/" + id), new Result { Diff= false } );
+            Register register = new Register
+            {
+                Left = _data.LeftJSON,
+                Right = _data.RightJSON,
+                Result = diffProperties.ToString()
+            };
+
+            //Storing for log
+            _context.Registers.Add(register);
+
+            _context.SaveChanges();
+
+            return Created(new Uri(Request.RequestUri + "/" + id), register);
         }
 
+        /// <summary>
+        /// Create a MainObject 
+        /// </summary>
+        /// <param name="objectDto">MainObject</param>
+        /// <returns>Action result</returns>
         [HttpPost]
         [Route("v1/diff/data/post")]
         public IHttpActionResult CreateObject(MainObjectDto objectDto)
@@ -109,6 +157,11 @@ namespace SimpleService.Controllers
 
         }
 
+        /// <summary>
+        /// Update a MianObject
+        /// </summary>
+        /// <param name="id">Object id</param>
+        /// <param name="objectDto"></param>
         [HttpPut]
         [Route("v1/diff/data/put")]
         public void UpdateObject(int id, MainObjectDto objectDto)
@@ -126,6 +179,10 @@ namespace SimpleService.Controllers
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Delete and object
+        /// </summary>
+        /// <param name="id"></param>
         [HttpDelete]
         [Route("v1/diff/data/delete")]
         public void DeleteObject(int id)
@@ -138,10 +195,5 @@ namespace SimpleService.Controllers
             _context.MainObjects.Remove(objectInDb);
             _context.SaveChanges();
         }
-    }
-
-    public class Result
-    {
-        public bool Diff { get; set; }
     }
 }

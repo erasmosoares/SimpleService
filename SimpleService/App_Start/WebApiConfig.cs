@@ -8,7 +8,7 @@ namespace SimpleService
     {
         public static void Register(HttpConfiguration config)
         {
-
+            // Formatting JSON
             var settings = config.Formatters.JsonFormatter.SerializerSettings;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.Formatting = Formatting.Indented;

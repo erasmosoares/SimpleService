@@ -6,6 +6,9 @@ using System.Web;
 
 namespace SimpleService.Controllers
 {
+    /// <summary>
+    /// Diff logics
+    /// </summary>
     public class Diff
     {
         private static Diff instance;

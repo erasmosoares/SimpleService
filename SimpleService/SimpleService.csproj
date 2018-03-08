@@ -111,6 +111,10 @@
     <Compile Include="Migrations\201803070122183_PopulatingMainObjectsDatabase.Designer.cs">
       <DependentUpon>201803070122183_PopulatingMainObjectsDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803080016192_RegistrationsData.cs" />
+    <Compile Include="Migrations\201803080016192_RegistrationsData.Designer.cs">
+      <DependentUpon>201803080016192_RegistrationsData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\MainObject.cs" />
@@ -135,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803070122183_PopulatingMainObjectsDatabase.resx">
       <DependentUpon>201803070122183_PopulatingMainObjectsDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803080016192_RegistrationsData.resx">
+      <DependentUpon>201803080016192_RegistrationsData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

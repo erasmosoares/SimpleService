@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SimpleService.Dto;
 using SimpleService.Models;
@@ -53,7 +54,7 @@ namespace SimpleService.Controllers
 
             var obj = Mapper.Map<MainObject, MainObjectDto>(objCheck);
 
-            Diff.Instance.LeftJSON = obj.ToString();
+            Diff.Instance.LeftJSON = JsonConvert.SerializeObject(obj);
 
             return Ok(String.Format(" File {0} added to the left side ", obj.Id));
         }
@@ -72,7 +73,7 @@ namespace SimpleService.Controllers
 
             var obj = Mapper.Map<MainObject, MainObjectDto>(objCheck);
 
-            Diff.Instance.RightJSON = obj.ToString();
+            Diff.Instance.RightJSON = JsonConvert.SerializeObject(obj);
 
             return Ok(String.Format(" File {0} added to the right side ", obj.Id));
         }

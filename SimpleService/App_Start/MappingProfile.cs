@@ -15,6 +15,9 @@ namespace SimpleService.App_Start
             /// Using Mapper 
             Mapper.CreateMap<MainObject, MainObjectDto>();
             Mapper.CreateMap<MainObjectDto, MainObject>();
+
+            Mapper.CreateMap<JSONFile, JSONFileDto>();
+            Mapper.CreateMap<JSONFileDto, JSONFile>();
         }
     }
 }

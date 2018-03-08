@@ -98,7 +98,9 @@
     <Compile Include="App_Start\MappingProfile.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Diff.cs" />
+    <Compile Include="Controllers\JSONFileController.cs" />
     <Compile Include="Controllers\MainObjectController.cs" />
+    <Compile Include="Dto\JSONFileDto.cs" />
     <Compile Include="Dto\MainObjectDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -115,8 +117,17 @@
     <Compile Include="Migrations\201803080016192_RegistrationsData.Designer.cs">
       <DependentUpon>201803080016192_RegistrationsData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803081936283_InitialFilesDatabase.cs" />
+    <Compile Include="Migrations\201803081936283_InitialFilesDatabase.Designer.cs">
+      <DependentUpon>201803081936283_InitialFilesDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803082011297_ChangingIdtype.cs" />
+    <Compile Include="Migrations\201803082011297_ChangingIdtype.Designer.cs">
+      <DependentUpon>201803082011297_ChangingIdtype.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\JSONFile.cs" />
     <Compile Include="Models\MainObject.cs" />
     <Compile Include="Models\Register.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -142,6 +153,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803080016192_RegistrationsData.resx">
       <DependentUpon>201803080016192_RegistrationsData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803081936283_InitialFilesDatabase.resx">
+      <DependentUpon>201803081936283_InitialFilesDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803082011297_ChangingIdtype.resx">
+      <DependentUpon>201803082011297_ChangingIdtype.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

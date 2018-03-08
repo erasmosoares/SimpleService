@@ -11,7 +11,7 @@ namespace SimpleService.Dto
     /// </summary>
     public class MainObjectDto
     {
-        public byte Id { get; set; }
+        public int Id { get; set; }
 
         [StringLength(255)]
         public string Name { get; set; }

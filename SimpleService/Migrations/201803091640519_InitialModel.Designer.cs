@@ -13,7 +13,7 @@ namespace SimpleService.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201803070113245_InitialModel"; }
+            get { return "201803091640519_InitialModel"; }
         }
         
         string IMigrationMetadata.Source

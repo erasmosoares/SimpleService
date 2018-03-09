@@ -9,9 +9,9 @@ namespace SimpleService.Models
 {
     public class JSONFile
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
+        [Required]
         public string File { get; set; }
     }
 }

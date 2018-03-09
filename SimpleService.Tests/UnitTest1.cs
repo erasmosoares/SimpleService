@@ -13,7 +13,7 @@ namespace SimpleService.Tests
     [TestClass]
     public class UnitTest1
     {
-       
+
         [TestMethod]
         public void TestGetSingle()
         {

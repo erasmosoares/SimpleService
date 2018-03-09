@@ -12,9 +12,8 @@ namespace SimpleService.Models
     /// </summary>
     public class Register
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
-        
+
         public string Left { get; set; }
 
         public string Right { get; set; }

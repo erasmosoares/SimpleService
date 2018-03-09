@@ -5,13 +5,13 @@ using SimpleService.Dto;
 using SimpleService.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
 
 namespace SimpleService.Controllers
 {
-    //http://www.tools.knowledgewalls.com/jsontostring
     public class JSONFileController : ApiController
     {
         private ApplicationDbContext _context;
@@ -19,6 +19,7 @@ namespace SimpleService.Controllers
         public JSONFileController()
         {
             _context = new ApplicationDbContext();
+
         }
 
         #region Diff
@@ -115,15 +116,15 @@ namespace SimpleService.Controllers
             String diffs = Diff.Instance.Compare().ToString();
 
             //Persisting log
-            //Register register = new Register
-            //{
-            //    Left = _data.LeftJSON,
-            //    Right = _data.RightJSON,
-            //    Result = diffProperties.ToString()
-            //};
-            ////Storing for log
-            //_context.Registers.Add(register);
-            //_context.SaveChanges();
+            Register register = new Register
+            {
+                Left = _data.LeftJSON,
+                Right = _data.RightJSON,
+                Result = diffs
+            };
+            //Storing for log
+            _context.Registers.Add(register);
+            _context.SaveChanges();
 
             return Created(new Uri(Request.RequestUri + "/" + id), diffs);
         }
@@ -221,5 +222,14 @@ namespace SimpleService.Controllers
                 return false;
             }
         }
+    }
+}
+
+
+public static class EntityExtensions
+{
+    public static void Clear<T>(this DbSet<T> dbSet) where T : class
+    {
+        dbSet.RemoveRange(dbSet);
     }
 }

@@ -125,6 +125,10 @@
     <Compile Include="Migrations\201803082011297_ChangingIdtype.Designer.cs">
       <DependentUpon>201803082011297_ChangingIdtype.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803082252442_UpdatingIds.cs" />
+    <Compile Include="Migrations\201803082252442_UpdatingIds.Designer.cs">
+      <DependentUpon>201803082252442_UpdatingIds.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\JSONFile.cs" />
@@ -159,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803082011297_ChangingIdtype.resx">
       <DependentUpon>201803082011297_ChangingIdtype.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803082252442_UpdatingIds.resx">
+      <DependentUpon>201803082252442_UpdatingIds.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

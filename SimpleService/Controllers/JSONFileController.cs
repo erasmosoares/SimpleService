@@ -7,11 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SimpleService.Controllers
 {
+    //http://www.tools.knowledgewalls.com/jsontostring
     public class JSONFileController : ApiController
     {
         private ApplicationDbContext _context;
@@ -21,6 +21,7 @@ namespace SimpleService.Controllers
             _context = new ApplicationDbContext();
         }
 
+        #region Diff
         /// <summary>
         /// Retrieve all Data
         /// </summary>
@@ -111,27 +112,22 @@ namespace SimpleService.Controllers
             if(_data.LeftJSON is null || _data.RightJSON is null)
                 return BadRequest();
 
-            IEnumerable<JProperty> diffProperties = Diff.Instance.Compare();
+            String diffs = Diff.Instance.Compare().ToString();
 
-            foreach (var item in diffProperties)
-            {
-                Console.WriteLine(" -> " + item.Value);
-            }
-
+            //Persisting log
             //Register register = new Register
-            //{                
+            //{
             //    Left = _data.LeftJSON,
             //    Right = _data.RightJSON,
             //    Result = diffProperties.ToString()
             //};
-
             ////Storing for log
             //_context.Registers.Add(register);
-
             //_context.SaveChanges();
 
-            return Created(new Uri(Request.RequestUri + "/" + id), diffProperties);
+            return Created(new Uri(Request.RequestUri + "/" + id), diffs);
         }
+        #endregion
 
         #region CRUD
 
@@ -144,6 +140,11 @@ namespace SimpleService.Controllers
         [Route("v1/diff/data/post")]
         public IHttpActionResult AddJSONFile(JSONFileDto JSONFile)
         {
+            JToken.Parse(JSONFile.File);
+
+            if(!ValidateJSON(JSONFile.File))
+                return BadRequest();
+
             if (!ModelState.IsValid)
                 return BadRequest();
 
@@ -197,5 +198,28 @@ namespace SimpleService.Controllers
         }
 
         #endregion
+
+        private bool ValidateJSON(string strInput)
+        {
+            strInput = strInput.Trim();
+            if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || 
+                (strInput.StartsWith("[") && strInput.EndsWith("]"))) 
+            {
+                try
+                {
+                    var obj = JToken.Parse(strInput);
+                    return true;
+                }
+                catch (Exception ex) 
+                {
+                    Console.WriteLine(ex.ToString());
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -113,26 +113,9 @@ namespace SimpleService.Controllers
         {
             Diff _data = Diff.Instance;
 
-            IEnumerable<JProperty> diffProperties = Diff.Instance.Compare();
+            String diffProperties = Diff.Instance.Compare().ToString();
 
-            foreach (var item in diffProperties)
-            {
-                Console.WriteLine(" -> "+item.Value);
-            }
-
-            Register register = new Register
-            {
-                Left = _data.LeftJSON,
-                Right = _data.RightJSON,
-                Result = diffProperties.ToString()
-            };
-
-            //Storing for log
-            _context.Registers.Add(register);
-
-            _context.SaveChanges();
-
-            return Created(new Uri(Request.RequestUri + "/" + id), register);
+            return Created(new Uri(Request.RequestUri + "/" + id), diffProperties);
         }
 
         /// <summary>

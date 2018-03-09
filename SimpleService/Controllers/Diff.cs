@@ -2,6 +2,7 @@
 using System.Text;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace SimpleService.Controllers
 {
@@ -41,7 +42,7 @@ namespace SimpleService.Controllers
             List<string> diffprops = new List<string>();
 
             StringBuilder diffReturn = new StringBuilder(); 
-            diffReturn.Append("Results: ");
+            diffReturn.Append("Results:");
 
             JObject leftJSON = JObject.Parse(LeftJSON);
             JObject rightJson = JObject.Parse(RightJSON);
@@ -55,11 +56,10 @@ namespace SimpleService.Controllers
                 diffReturn.Append("Equal");
             else
             {
-                var missingProperties = leftProperties.Where(expected => rightProperties.Where(actual => actual.Name == expected.Name).Count() == 0);
-                if (missingProperties.Count() > 0)
-                    missingProperties.ToList().ForEach(prop => {
-                        diffReturn.Append("Missing Property: ").Append(prop);
-                    });
+                if (leftProperties.Count != rightProperties.Count)
+                {
+                    diffReturn.Append(" - different sizes - missing properties");
+                }
 
                 AppendDiffValues(leftJSON, rightJson, diffReturn, diffprops);
                 AppendOffsets(LeftJSON, RightJSON, diffprops, diffReturn);
@@ -76,7 +76,7 @@ namespace SimpleService.Controllers
 
                 if (!JToken.DeepEquals(sourceProperty.Value, targetProp.Value))
                 {
-                    diffReturn.Append("Diff Property: ").Append(sourceProperty.Key).Append(":").Append(sourceProperty.Value);
+                    diffReturn.Append(" different property value : ").Append(sourceProperty.Key).Append(" : ").Append(sourceProperty.Value);
                     diffprops.Add(sourceProperty.Key);
                 }
             }

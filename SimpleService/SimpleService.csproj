@@ -107,6 +107,10 @@
     <Compile Include="Migrations\201803091640519_InitialModel.Designer.cs">
       <DependentUpon>201803091640519_InitialModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803092106055_SeedSampleFiles.cs" />
+    <Compile Include="Migrations\201803092106055_SeedSampleFiles.Designer.cs">
+      <DependentUpon>201803092106055_SeedSampleFiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\JSONFile.cs" />
@@ -128,6 +132,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803091640519_InitialModel.resx">
       <DependentUpon>201803091640519_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803092106055_SeedSampleFiles.resx">
+      <DependentUpon>201803092106055_SeedSampleFiles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

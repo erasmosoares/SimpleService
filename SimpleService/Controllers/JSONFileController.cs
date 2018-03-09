@@ -131,7 +131,6 @@ namespace SimpleService.Controllers
         #endregion
 
         #region CRUD
-
         /// <summary>
         /// Inser a JSON File 
         /// </summary>
@@ -198,20 +197,23 @@ namespace SimpleService.Controllers
             _context.SaveChanges();
         }
 
-        #endregion
-
+        /// <summary>
+        /// Is a valid JSON string
+        /// </summary>
+        /// <param name="strInput"></param>
+        /// <returns></returns>
         private bool ValidateJSON(string strInput)
         {
             strInput = strInput.Trim();
-            if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || 
-                (strInput.StartsWith("[") && strInput.EndsWith("]"))) 
+            if ((strInput.StartsWith("{") && strInput.EndsWith("}")) ||
+                (strInput.StartsWith("[") && strInput.EndsWith("]")))
             {
                 try
                 {
                     var obj = JToken.Parse(strInput);
                     return true;
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
                     return false;
@@ -222,14 +224,6 @@ namespace SimpleService.Controllers
                 return false;
             }
         }
-    }
-}
-
-
-public static class EntityExtensions
-{
-    public static void Clear<T>(this DbSet<T> dbSet) where T : class
-    {
-        dbSet.RemoveRange(dbSet);
+        #endregion
     }
 }

@@ -1,5 +1,5 @@
 # Diff Service
-Diff service is a tool that accepts JSON base data to compare differences between two JSON files.
+Diff service is an interface that accepts JSON base data to compare differences between two JSON files.
 
 This solution was made using *Web Api* provided by .Net and *Entity Framework*.
 

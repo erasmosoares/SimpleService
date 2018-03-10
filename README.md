@@ -55,8 +55,10 @@ Once you have the files into both sides, a diff can be performed using this URI
 /v1/diff/1
 ```
 The {id} means the side you want to see the results.
-If different sizes, the service will respond the files are different size.
-If same size, but different properties, the result show a text message like this >
+
+- If different sizes, the service will respond the files are different size.
+
+- If same size, but different properties, the result show a text message like this >
 
 Difference | Offsets / Line
 ------------ | -------------

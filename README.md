@@ -6,8 +6,7 @@ This solution was made using *Web Api* provided by .Net and *Entity Framework*.
 <h2> Usage </h2>
 
 - Clone repository {SimpleService} and open the solution in your visual studio.
-- The project has a migration folder (Code first migration) that we can use to create the objects in the database. Since we are not talking about a 
-  production deploy, what should be done would only execute the following commands in the package manage console to make sure the database is ok.
+- The project has a migration folder (Code first migration) that you can use to create the and seed the database. Since we are not talking about a production deploy, what should be done would only execute the following commands in the package manage console to make sure the database is ok.
 ```
 Updata-Database
 ```

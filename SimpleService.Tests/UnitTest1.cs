@@ -24,13 +24,12 @@ namespace SimpleService.Tests
             controller.Configuration = new HttpConfiguration();
 
             // Act
-            IHttpActionResult actionResult = controller.GetFiles(0);
+            IHttpActionResult actionResult = controller.GetFiles(999);
             var contentResult = actionResult as OkNegotiatedContentResult<JSONFile>;
 
             // Assert
-            Assert.IsNotNull(contentResult);
-            Assert.IsNotNull(contentResult.Content);
-            Assert.AreEqual(0, contentResult.Content.Id);
+            Assert.IsNull(contentResult);
+            
         }
 
         private List<JSONFile> GetTestJSONs()
